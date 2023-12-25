@@ -7738,6 +7738,7 @@ var AblePlayerInstances = [];
 				this.synth = window.speechSynthesis;
 
 				if (context === 'init') { 
+					console.log("Init speech...")
 					// handle a click on anything, in case the user 
 					// clicks something before they click 'play' or 'prefs' buttons
 					// that would allow us to init speech before it's needed 
@@ -8137,6 +8138,7 @@ var AblePlayerInstances = [];
 				}
 				else if (this.speechEnabled) { 
 					// use browser's built-in speech synthesis
+					this.initSpeech('prefs');
 					this.announceDescriptionText('description',descText);
 					if (this.prefDescVisible) {
 						// write description to the screen for sighted users
@@ -8202,7 +8204,6 @@ var AblePlayerInstances = [];
 	}; 
 
 	AblePlayer.prototype.announceDescriptionText = function(context, text) {
-
 		// this function announces description text using speech synthesis
 		// it's only called if already determined that browser supports speech synthesis
 		// context is either:
@@ -8252,7 +8253,8 @@ var AblePlayerInstances = [];
 			rate = this.prefDescRate;
 			volume = this.prefDescVolume;
 		}
-
+		this.initSpeech('perf');
+        console.log("___")
 		// get the voice associated with the user's chosen voice name
 		if (this.descVoices) {
 			if (this.descVoices.length > 0) {
@@ -8287,10 +8289,12 @@ var AblePlayerInstances = [];
 				// If there's a mismatch between any of these, the description will likely be unintelligible
 				utterance.lang = this.lang;
 				utterance.onstart = function(e) { 
+					console.log("started")
 					// utterance has started 
 				};
 				utterance.onpause = function(e) { 
 					// utterance has paused 
+					console.log("onpause")
 				};
 				utterance.onend = function(e) {
 					// utterance has ended 

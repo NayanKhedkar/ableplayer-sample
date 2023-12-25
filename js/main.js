@@ -28,14 +28,21 @@ var defaultCaptionHeight;
 var defaultToolbarHeight;
 var defaultDescHeight;
 var defaultAbleWrapperHeight;
-var windowHeight = window.parent.document.querySelector('.webobject').clientHeight || $(window).height();
-
-
+var windowHeight = $(window).height()
+if(window.parent.document.querySelector('.webobject')){
+    windowHeight = window.parent.document.querySelector('.webobject').clientHeight
+}
 if (!window.parent.GetPlayer) {
     window.parent.GetPlayer = function () {
+        var fakeObj = {}
+        fakeObj[ACTIVE_SEEK_BAR_VARIABLE_NAME] = false
+        fakeObj[CURRENT_TIME_VARIABLE_NAME] = 0
+        fakeObj[UPDATE_VOLUME_VARIABLE_NAME] = 7
+        fakeObj[MUTE_UNMUTE_VARIABLE_NAME] = false
+        fakeObj[CAPTION_SHOW_HIDE_VARIABLE_NAME] = false
         return {
-            GetVar: function () { return; },
-            SetVar: function (val) { }
+            GetVar: function (key) { return fakeObj[key] },
+            SetVar: function (key, val) { fakeObj[key] = val }
         }
     }
 }
@@ -326,7 +333,7 @@ function setCurrentTime(time) {
 }
 
 function updateMediaTime(playerObj) {
-    console.log("TimeUpdate : elapsed", playerObj.elapsed);
+    //console.log("TimeUpdate : elapsed", playerObj.elapsed);
     var player = window.parent.GetPlayer();
     player.SetVar(CURRENT_TIME_VARIABLE_NAME, playerObj.elapsed);
 }
